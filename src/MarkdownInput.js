@@ -81,6 +81,17 @@ export default class MarkdownInput extends Component {
     }
   }
 
+  setValidityFromMarkers(markers) {
+    if (!this._input) {
+      return
+    }
+
+    const validation = markers.filter(marker => marker.type === 'validation')
+    const errors = validation.filter(marker => marker.level === 'error')
+    const validity = errors && errors.length > 0 ? errors[0].item.message : ''
+    this._input.setCustomValidity(validity)
+  }
+
   componentDidMount() {
     document.addEventListener('keydown', this.handleKeyDown, true)
   }
@@ -90,23 +101,36 @@ export default class MarkdownInput extends Component {
   }
 
   getSnapshotBeforeUpdate(prevProps, prevState) {
-    if (prevState.mode === 'write' && this.state.mode !== 'write') {
-      return {editPosition: this.recordEditPosition()}
+    let record = false
+    const snapshot = {}
+
+    if (prevProps.value !== this.props.value && !this._didInput) {
+      // Someone else is updating the value, record our position and
+      // restore it from snapshot after update
+      record = true
+      this.recordEditPosition()
+      snapshot.restoreEditPosition = true
     }
 
-    return null
+    if (prevState.mode === 'write' && this.state.mode !== 'write') {
+      // We'll manually restore edit position when back from preview
+      this.recordEditPosition()
+    }
+
+    return record ? snapshot : null
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    if (this._input) {
-      const {markers} = this.props
-      const validation = markers.filter(marker => marker.type === 'validation')
-      const errors = validation.filter(marker => marker.level === 'error')
-      const validity = errors && errors.length > 0 ? errors[0].item.message : ''
-      this._input.setCustomValidity(validity)
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    this._didInput = false
+
+    if (prevProps.markers !== this.props.markers) {
+      this.setValidityFromMarkers(this.props.markers)
     }
 
-    if (this.state.mode === 'write' && prevState.mode !== 'write') {
+    if (
+      (this.state.mode === 'write' && prevState.mode !== 'write') ||
+      (snapshot && snapshot.restoreEditPosition)
+    ) {
       this.restoreEditPosition()
     }
 
@@ -216,6 +240,7 @@ export default class MarkdownInput extends Component {
   }
 
   handleChange = event => {
+    this._didInput = true
     const value = event.currentTarget.value
     this.props.onChange(PatchEvent.from(value ? set(value) : unset()))
   }
