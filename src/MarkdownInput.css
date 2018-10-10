@@ -1,0 +1,33 @@
+@import 'part:@sanity/base/theme/variables-style';
+
+.tabs {
+  border-bottom: 1px solid var(--gray);
+  padding-top: 5px;
+}
+
+.tab {
+  background: var(--gray-lighter);
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.activeTab {
+  composes: tab;
+  border: 1px solid var(--gray);
+  border-bottom: 0;
+}
+
+.previewFocusTarget {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+}
+
+.preview {
+  background-color: var(--input-bg);
+  border: var(--input-border-size) solid var(--input-border-color);
+  padding: 0.5em;
+}
