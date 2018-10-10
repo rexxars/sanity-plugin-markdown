@@ -26,6 +26,15 @@ const defaultOptions = {
   autoGrow: true
 }
 
+const getElementHeight = el => {
+  if (!el) {
+    return undefined
+  }
+
+  const style = getComputedStyle(el)
+  return el.clientHeight - (parseFloat(style.paddingTop) + parseFloat(style.paddingBottom))
+}
+
 // eslint-disable-next-line react/no-multi-comp
 export default class MarkdownInput extends Component {
   static propTypes = {
@@ -165,20 +174,28 @@ export default class MarkdownInput extends Component {
     this.editPosition = null
   }
 
+  getEditorHeight = () => getElementHeight(this._editor && this._editor.el)
+
   handleBlurred = () => this.setState({hasFocus: false})
   handleFocused = () => this.setState({hasFocus: true})
 
   handleSetWriteMode = () => {
-    this.setState({mode: 'write'}, () => this.focus())
+    this.setState({mode: 'write', editorHeight: this.getEditorHeight()}, () => this.focus())
   }
 
   handleSetPreviewMode = () => {
-    this.setState({mode: 'preview'})
+    this.setState({
+      mode: 'preview',
+      editorHeight: this.getEditorHeight()
+    })
   }
 
   handleToggleMode = () => {
     this.handleCloseUrlDialog()
-    this.setState(({mode}) => ({mode: mode === 'write' ? 'preview' : 'write'}))
+    this.setState(({mode}) => ({
+      mode: mode === 'write' ? 'preview' : 'write',
+      editorHeight: this.getEditorHeight()
+    }))
   }
 
   handleInputFocused = evt => {
@@ -236,7 +253,7 @@ export default class MarkdownInput extends Component {
   }
 
   render() {
-    const {mode, showUrlDialogFor, urlValue} = this.state
+    const {mode, showUrlDialogFor, urlValue, editorHeight} = this.state
     const {value, markers, type, readOnly, level} = this.props
     const options = {...defaultOptions, ...(type.options || {})}
     const {usePreview, autoGrow, minRows} = options
@@ -282,7 +299,7 @@ export default class MarkdownInput extends Component {
               placeholder={type.placeholder}
             />
           ) : (
-            <div className={styles.preview}>
+            <div className={styles.preview} style={{minHeight: `${editorHeight}px`}}>
               <input
                 className={styles.previewFocusTarget}
                 id={this.id}

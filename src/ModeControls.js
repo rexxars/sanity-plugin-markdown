@@ -4,7 +4,7 @@ import Button from 'part:@sanity/components/buttons/default'
 import styles from './MarkdownInput.css'
 
 function ModeControls(props) {
-  const {currentMode, previewRef, onSetPreviewMode, onSetWriteMode, onBlur, onFocus} = props
+  const {currentMode, onSetPreviewMode, onSetWriteMode, onBlur, onFocus} = props
   const inWriteMode = currentMode === 'write'
   return (
     <React.Fragment>
@@ -21,7 +21,8 @@ function ModeControls(props) {
         Write
       </Button>
       <Button
-        ref={previewRef}
+        // eslint-disable-next-line react/prop-types
+        ref={props.previewRef}
         className={inWriteMode ? styles.tab : styles.activeTab}
         kind="simple"
         type="button"
@@ -38,7 +39,6 @@ function ModeControls(props) {
 }
 
 ModeControls.propTypes = {
-  previewRef: PropTypes.func.isRequired,
   currentMode: PropTypes.string.isRequired,
   onSetWriteMode: PropTypes.func.isRequired,
   onSetPreviewMode: PropTypes.func.isRequired,
