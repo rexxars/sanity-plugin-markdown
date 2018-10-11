@@ -28,11 +28,12 @@ const renderers = {
 
 function Preview(props) {
   const {options, value} = props
+  const escapeHtml = !options.skipHtml && options.escapeHtml
   return (
     <Markdown
-      escapeHtml
       className={styles.root}
       {...options}
+      escapeHtml={escapeHtml}
       renderers={renderers}
       source={value}
     />
@@ -48,7 +49,7 @@ Preview.propTypes = {
 
 Preview.defaultProps = {
   value: '',
-  options: {}
+  options: {skipHtml: true}
 }
 
 export default Preview

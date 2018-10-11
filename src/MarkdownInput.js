@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
+import ReactMarkdown from 'react-markdown'
 import TextareaEditor from 'textarea-editor'
 import DiffMatchPatch from 'diff-match-patch'
 import AutosizeTextarea from 'react-autosize-textarea'
@@ -53,7 +54,10 @@ export default class MarkdownInput extends Component {
         editorClassName: PropTypes.string,
         minRows: PropTypes.number,
         usePreview: PropTypes.bool,
-        autoGrow: PropTypes.bool
+        autoGrow: PropTypes.bool,
+        // eslint-disable-next-line react/forbid-foreign-prop-types
+        previewOptions: PropTypes.shape(ReactMarkdown.propTypes || {}),
+        renderPreview: PropTypes.func
       })
     }).isRequired,
     markers: PropTypes.arrayOf(
@@ -369,6 +373,7 @@ export default class MarkdownInput extends Component {
     const {usePreview, autoGrow, minRows} = options
     const inWriteMode = mode === 'write'
     const TextArea = autoGrow ? AutosizeTextarea : DefaultTextArea
+    const MarkdownPreview = options.renderPreview || Preview
 
     return (
       <FormField
@@ -415,7 +420,7 @@ export default class MarkdownInput extends Component {
                 id={this.id}
                 onFocus={this.handleFocusRedirect}
               />
-              <Preview options={options} value={value} />
+              <MarkdownPreview options={options.previewOptions} value={value} />
             </div>
           )}
         </div>
