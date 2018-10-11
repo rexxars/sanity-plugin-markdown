@@ -25,7 +25,8 @@ const defaultOptions = {
   editorClassName: textStyles.textarea,
   minRows: 10,
   usePreview: true,
-  autoGrow: true
+  autoGrow: true,
+  previewOptions: Preview.defaultOptions
 }
 
 const getElementHeight = el => {
@@ -39,6 +40,8 @@ const getElementHeight = el => {
 
 // eslint-disable-next-line react/no-multi-comp
 export default class MarkdownInput extends Component {
+  static defaultOptions = {...defaultOptions}
+
   static propTypes = {
     value: PropTypes.string,
     level: PropTypes.number.isRequired,
@@ -269,6 +272,8 @@ export default class MarkdownInput extends Component {
 
   getEditorHeight = () => getElementHeight(this._editor && this._editor.el)
 
+  handlePreventClick = evt => evt.preventDefault()
+
   handleBlurred = () => this.setState({hasFocus: false})
   handleFocused = () => this.setState({hasFocus: true})
 
@@ -414,13 +419,20 @@ export default class MarkdownInput extends Component {
               placeholder={type.placeholder}
             />
           ) : (
-            <div className={styles.preview} style={{minHeight: `${editorHeight}px`}}>
+            <div
+              className={styles.preview}
+              style={{minHeight: `${editorHeight}px`}}
+              onClick={this.handlePreventClick}
+            >
               <input
                 className={styles.previewFocusTarget}
                 id={this.id}
                 onFocus={this.handleFocusRedirect}
               />
-              <MarkdownPreview options={options.previewOptions} value={value} />
+              <MarkdownPreview
+                options={{...defaultOptions.previewOptions, ...options.previewOptions}}
+                value={value}
+              />
             </div>
           )}
         </div>

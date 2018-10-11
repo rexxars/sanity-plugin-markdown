@@ -2,7 +2,7 @@
   "name": "sanity-plugin-markdown",
   "version": "1.0.0",
   "description": "Markdown type and input for Sanity",
-  "main": "src/MarkdownInput.js",
+  "main": "lib/MarkdownInput.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
