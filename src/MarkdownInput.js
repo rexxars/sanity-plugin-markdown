@@ -21,6 +21,7 @@ const isMac = navigator.userAgent.includes('Mac OS')
 const upperFirst = str => `${str.slice(0, 1).toUpperCase()}${str.slice(1)}`
 const DefaultTextArea = props => <textarea {...props} />
 const defaultOptions = {
+  editorClassName: textStyles.textarea,
   minRows: 10,
   usePreview: true,
   autoGrow: true
@@ -49,6 +50,7 @@ export default class MarkdownInput extends Component {
       description: PropTypes.string,
       placeholder: PropTypes.string,
       options: PropTypes.shape({
+        editorClassName: PropTypes.string,
         minRows: PropTypes.number,
         usePreview: PropTypes.bool,
         autoGrow: PropTypes.bool
@@ -396,7 +398,7 @@ export default class MarkdownInput extends Component {
             <TextArea
               id={this.id}
               readOnly={readOnly}
-              className={textStyles.textarea}
+              className={options.editorClassName}
               rows={minRows}
               value={value}
               onInput={this.handleChange}
