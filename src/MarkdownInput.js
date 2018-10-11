@@ -49,14 +49,24 @@ export default class MarkdownInput extends Component {
       description: PropTypes.string,
       placeholder: PropTypes.string,
       rows: PropTypes.number
-    }).isRequired
+    }).isRequired,
+    markers: PropTypes.arrayOf(
+      PropTypes.shape({
+        type: PropTypes.string.isRequired,
+        level: PropTypes.string.isRequired,
+        item: PropTypes.shape({
+          message: PropTypes.string.isRequired
+        })
+      })
+    )
   }
 
   static defaultProps = {
     value: '',
     readOnly: false,
     onFocus: noop,
-    onBlur: noop
+    onBlur: noop,
+    markers: []
   }
 
   id = `md-input-${Date.now()}-${instanceId++}`
