@@ -23,6 +23,7 @@ class Control extends React.PureComponent {
         aria-label={label}
         title={label}
         onClick={this.handleClick}
+        tabIndex="-1"
       >
         <Icon size={iconSize} />
       </button>
