@@ -149,15 +149,54 @@ export default class MarkdownInput extends Component {
     }
   }
 
+  // eslint-disable-next-line complexity
   handleKeyDown = evt => {
     if (!this.state.hasFocus) {
       return
     }
 
     const hasModifier = isMac ? evt.metaKey : evt.ctrlKey
+
+    // Toggle preview/write mode (ctrl + shift + p)
     if (evt.key === 'p' && hasModifier && evt.shiftKey) {
       evt.preventDefault()
       this.handleToggleMode()
+    }
+
+    // Toggle bold (ctrl + b)
+    if (evt.key === 'b' && hasModifier) {
+      evt.preventDefault()
+      this._editor.toggle('bold')
+    }
+
+    // Toggle italic (ctrl + i)
+    if (evt.key === 'i' && hasModifier) {
+      evt.preventDefault()
+      this._editor.toggle('italic')
+    }
+
+    // Toggle link (ctrl + k)
+    if (evt.key === 'k' && hasModifier) {
+      evt.preventDefault()
+      this.setState({showUrlDialogFor: 'link'})
+    }
+
+    // Toggle ordered list (ctrl + shift + 7)
+    if (evt.key === '7' && hasModifier && evt.shiftKey) {
+      evt.preventDefault()
+      this._editor.toggle('orderedList')
+    }
+
+    // Toggle unordered list (ctrl + shift + 8)
+    if (evt.key === '8' && hasModifier && evt.shiftKey) {
+      evt.preventDefault()
+      this._editor.toggle('unorderedList')
+    }
+
+    // Toggle heading (ctrl + alt + [1-5])
+    if (/^Digit[1-5]$/.test(evt.code) && hasModifier && evt.altKey) {
+      evt.preventDefault()
+      this._editor.toggle(`header${evt.code.slice(-1)}`)
     }
   }
 
