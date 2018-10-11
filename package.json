@@ -4,7 +4,7 @@
   "description": "Markdown type and input for Sanity",
   "main": "lib/MarkdownInput.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "prepublishOnly": "babel -D -d lib/ src/"
   },
   "repository": {
     "type": "git",
@@ -30,5 +30,12 @@
     "react-icons": "^2.2.7",
     "react-markdown": "^4.0.2",
     "textarea-editor": "^2.1.1"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.1.2",
+    "@babel/core": "^7.1.2",
+    "@babel/plugin-proposal-class-properties": "^7.1.0",
+    "@babel/preset-env": "^7.1.0",
+    "@babel/preset-react": "^7.0.0"
   }
 }
