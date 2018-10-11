@@ -1,6 +1,6 @@
 # sanity-plugin-markdown
 
-Markdown input component and schema type for Sanity
+Markdown input component and schema type for [Sanity](https://www.sanity.io/)
 
 [![npm version](https://img.shields.io/npm/v/sanity-plugin-markdown.svg?style=flat-square)](http://browsenpm.org/package/sanity-plugin-markdown)
 
