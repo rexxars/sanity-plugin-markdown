@@ -20,9 +20,9 @@ sanity install markdown
 
 ## Basic usage
 
-_TL;DR:_ Just use `type: 'markdown'` on a field in your schema!
+**TL;DR:** Just use `type: 'markdown'` on a field in your schema!
 
-_Long version:_ In your schema definitions (think `schemas/blogPost.js`):
+**Long version:** In your schema definitions (think `schemas/blogPost.js`):
 
 ```js
 export default {
@@ -51,7 +51,7 @@ export default {
 - `usePreview` - _boolean_ Whether or not to use the preview functionality (default: `true`)
 - `previewOptions` - _object_ Object of props passed to [react-markdown](https://github.com/rexxars/react-markdown) for rendering (default: `{skipHtml: true}`)
 - `renderPreview` - _function_ React component used to render Markdown preview (default: [react-markdown](https://github.com/rexxars/react-markdown))
-  - _Looking to render full-blown HTML?_ You may import `sanity-plugin-markdown/html-preview` for a renderer that parses HTML. _Be careful_, input is not filtered.
+  - **Looking to render full-blown HTML?** You may import `sanity-plugin-markdown/html-preview` for a renderer that parses HTML. **Be careful**, input is not filtered.
 
 ## Default option values
 
