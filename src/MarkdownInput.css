@@ -3,6 +3,7 @@
 .tabs {
   border-bottom: 1px solid var(--gray);
   padding-top: 5px;
+  min-height: 40px;
 }
 
 .tab {

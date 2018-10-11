@@ -48,7 +48,11 @@ export default class MarkdownInput extends Component {
       title: PropTypes.string,
       description: PropTypes.string,
       placeholder: PropTypes.string,
-      rows: PropTypes.number
+      options: PropTypes.shape({
+        minRows: PropTypes.number,
+        usePreview: PropTypes.bool,
+        autoGrow: PropTypes.bool
+      })
     }).isRequired,
     markers: PropTypes.arrayOf(
       PropTypes.shape({
@@ -274,6 +278,12 @@ export default class MarkdownInput extends Component {
   }
 
   handleToggleMode = () => {
+    const options = this.props.type.options || {}
+    const usePreview = typeof options.usePreview === 'undefined' ? true : options.usePreview
+    if (!usePreview) {
+      return
+    }
+
     this.handleCloseUrlDialog()
     this.setState(({mode}) => ({
       mode: mode === 'write' ? 'preview' : 'write',
@@ -378,7 +388,7 @@ export default class MarkdownInput extends Component {
             />
           )}
 
-          <Controls onClick={this.handleAction} />
+          <Controls onClick={this.handleAction} float={usePreview} />
         </div>
 
         <div className={textStyles.root}>

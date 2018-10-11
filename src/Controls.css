@@ -4,6 +4,10 @@
   float: right;
 }
 
+.staticActionButtons {
+  min-height: 20px;
+}
+
 .button {
   color: #586069;
   background: transparent;

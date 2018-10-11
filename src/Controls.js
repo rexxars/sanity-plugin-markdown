@@ -30,8 +30,9 @@ const actions = [
 ]
 
 function Controls(props) {
+  const className = props.float ? styles.actionButtons : styles.staticActionButtons
   return (
-    <div className={styles.actionButtons}>
+    <div className={className}>
       {actions.map(action => (
         <Control key={action.id} {...action} onClick={props.onClick} />
       ))}
@@ -40,7 +41,8 @@ function Controls(props) {
 }
 
 Controls.propTypes = {
-  onClick: PropTypes.func.isRequired
+  onClick: PropTypes.func.isRequired,
+  float: PropTypes.bool.isRequired
 }
 
 export default Controls
