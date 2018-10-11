@@ -8,6 +8,7 @@ import GoItalic from './icons/GoItalic'
 import GoQuote from 'react-icons/lib/go/quote'
 import GoCode from 'react-icons/lib/go/code'
 import GoLink from 'react-icons/lib/go/link'
+import GoImage from 'react-icons/lib/go/file-media'
 import styles from './Controls.css'
 import Control from './Control'
 
@@ -21,6 +22,7 @@ const actions = [
   {id: 'blockquote', label: 'Insert a quote', groupStart: true, icon: GoQuote},
   {id: 'code', label: 'Insert code', icon: GoCode},
   {id: 'link', label: 'Insert a link', icon: GoLink},
+  {id: 'image', label: 'Insert an image', icon: GoImage},
 
   // Lists
   {id: 'unorderedList', label: 'Add a bulleted list', groupStart: true, icon: GoListUnordered},

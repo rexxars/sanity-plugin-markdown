@@ -1,6 +1,5 @@
 import React, {Component} from 'react'
 import PropTypes from 'prop-types'
-import Markdown from 'react-markdown'
 import TextareaEditor from 'textarea-editor'
 import DiffMatchPatch from 'diff-match-patch'
 import AutosizeTextarea from 'react-autosize-textarea'
@@ -11,6 +10,7 @@ import {PatchEvent, patches} from 'part:@sanity/form-builder'
 import textStyles from 'part:@sanity/components/textareas/default-style'
 import ModeControls from './ModeControls'
 import Controls from './Controls'
+import Preview from './Preview'
 import styles from './MarkdownInput.css'
 
 let instanceId = 1
@@ -151,6 +151,16 @@ export default class MarkdownInput extends Component {
     }
   }
 
+  getSelectedText = () => {
+    if (!this._editor || !this._input) {
+      return ''
+    }
+
+    const value = this._input.value
+    const [fromIndex, toIndex] = this._editor.range()
+    return value.slice(fromIndex, toIndex)
+  }
+
   recordEditPosition = () => {
     if (!this._editor || !this._input) {
       return null
@@ -234,8 +244,14 @@ export default class MarkdownInput extends Component {
 
   handleFocusRedirect = () => {
     this.handleFocused()
-    if (this.previewButtonRef) {
-      this.previewButtonRef.focus()
+
+    if (!this.previewButtonRef) {
+      return
+    }
+
+    const ref = this.previewButtonRef.current || this.previewButtonRef
+    if (ref.focus) {
+      ref.focus()
     }
   }
 
@@ -246,17 +262,25 @@ export default class MarkdownInput extends Component {
   }
 
   handleAction = (event, action) => {
-    if (action === 'link' || action === 'image') {
-      this.setState({showUrlDialogFor: action})
-    } else {
+    const isParameterized = action === 'link' || action === 'image'
+
+    if (!isParameterized) {
       this._editor.toggle(action)
+      return
+    }
+
+    if (this._editor.hasFormat(action)) {
+      this._editor.unformat(action)
+    } else {
+      this.setState({showUrlDialogFor: action})
     }
   }
 
-  handleCloseUrlDialog = (callback = noop) => {
+  handleCloseUrlDialog = callback => {
+    const cb = typeof callback === 'function' ? callback : noop
     this.setState({showUrlDialogFor: null, urlValue: ''}, () => {
       this.focus()
-      callback()
+      cb()
     })
   }
 
@@ -273,7 +297,7 @@ export default class MarkdownInput extends Component {
   handleUrlInputComplete = () => {
     const {showUrlDialogFor, urlValue} = this.state
     this.handleCloseUrlDialog(() => {
-      this._editor.toggle(showUrlDialogFor, urlValue)
+      this._editor.toggle(showUrlDialogFor, urlValue || undefined)
     })
   }
 
@@ -330,7 +354,7 @@ export default class MarkdownInput extends Component {
                 id={this.id}
                 onFocus={this.handleFocusRedirect}
               />
-              <Markdown {...options} source={value} />
+              <Preview options={options} value={value} />
             </div>
           )}
         </div>
