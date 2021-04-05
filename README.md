@@ -1,3 +1,8 @@
+# ⚠️ Moved to new organization
+
+Go to https://github.com/sanity-io/sanity-plugin-markdown for the new version!
+
+
 # sanity-plugin-markdown
 
 Markdown input component and schema type for [Sanity](https://www.sanity.io/)
